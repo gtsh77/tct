@@ -9,6 +9,7 @@ interface rgba {
 
 class Main {
 	private Jimp = require("jimp");
+	private fs = require("fs");
 	private mapArr: number[] = [];
 
 	public init(): void {
@@ -31,6 +32,7 @@ class Main {
 	}
 
 	public buildMap(arr: rgba[]): void {
+		let mapSerial: string = null;
 		for(let pixel of arr){
 			if(pixel.a !== 0){
 				if(pixel.r === 255 && pixel.g === 255 && pixel.b === 255) this.mapArr.push(1);
@@ -38,7 +40,17 @@ class Main {
 			}
 			else this.mapArr.push(0);
 		}
-		console.log(JSON.stringify(this.mapArr))
+		mapSerial = JSON.stringify(this.mapArr);
+		console.log(mapSerial);
+		this.writeToFile(mapSerial);
+	}
+
+	public writeToFile(data: string): void {
+		this.fs.writeFile("./map.json", data, (err) => {
+		    if(err) {
+		        return console.log(err);
+		    }
+		});
 	}
 }
 
