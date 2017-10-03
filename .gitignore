@@ -1,2 +1,5 @@
 node_modules
 package-lock.json
+.tscache
+src/**/*.js
+src/**/*.js.map
