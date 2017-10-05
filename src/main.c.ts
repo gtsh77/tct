@@ -29,6 +29,10 @@ class Main {
 			console.log('specify path to definitions file');
 			return;
 		}
+		else if(!process.argv[4]){
+			console.log('specify path and name for output file');
+			return;
+		}
 		this.fs.readFile(process.argv[3], (err, data) => {
 			if (err) throw err;
 			this.definitions = JSON.parse(data);
@@ -72,7 +76,7 @@ class Main {
 	}
 
 	public writeToFile(data: string): void {
-		this.fs.writeFile("./map.json", data, (err) => {
+		this.fs.writeFile(process.argv[4], data, (err) => {
 		    if(err) {
 		        return console.log(err);
 		    }
