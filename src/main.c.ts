@@ -65,18 +65,29 @@ class Main {
 		for(let pixel of arr){
 			if(pixel.a === 255){
 				for(let definition of this.definitions){
-					if(pixel.r === definition.r && pixel.g === definition.g && pixel.b === definition.b) this.mapArr.push(definition.id);
+					if(pixel.r === definition.r && pixel.g === definition.g && pixel.b === definition.b){
+						this.mapArr.push(definition.id);
+						break;
+					}
 				}
 			}
 			else this.mapArr.push(0);
 		}
 		mapSerial = JSON.stringify(this.mapArr);
-		console.log(mapSerial);
+		//write json
 		this.writeToFile(mapSerial);
+		//write bin
+		let buffer = Buffer.alloc(this.mapArr.length);
+		for(let i:number = 0; i < this.mapArr.length; i++)
+		{
+			buffer.writeUInt8(this.mapArr[i],i);
+		}
+		this.writeToFile(buffer,'binary');
+
 	}
 
-	public writeToFile(data: string): void {
-		this.fs.writeFile(process.argv[4], data, (err) => {
+	public writeToFile(data: any, type?: string): void {
+		this.fs.writeFile(process.argv[4] + ( type === 'binary'?'.bin':''), data, type?type:'utf8', (err) => {
 		    if(err) {
 		        return console.log(err);
 		    }
